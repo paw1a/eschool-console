@@ -1,11 +1,11 @@
-package eschool_console
+package console
 
 import (
 	"bufio"
 	"context"
 	"fmt"
 	"github.com/guregu/null"
-	"github.com/paw1a/eschool-console/dto"
+	dto2 "github.com/paw1a/eschool-console/console/dto"
 	"github.com/paw1a/eschool-core/domain"
 	"github.com/paw1a/eschool-core/port"
 	"io"
@@ -27,14 +27,14 @@ func (h *Handler) FindAllCourses(c *Console) {
 	}
 
 	for _, course := range courses {
-		dto.PrintCourseDTO(dto.NewCourseDTO(course))
+		dto2.PrintCourseDTO(dto2.NewCourseDTO(course))
 		fmt.Println()
 	}
 }
 
 func (h *Handler) FindCourseByID(c *Console) {
 	var courseID domain.ID
-	err := dto.InputID(&courseID, "course")
+	err := dto2.InputID(&courseID, "course")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -46,8 +46,8 @@ func (h *Handler) FindCourseByID(c *Console) {
 		return
 	}
 
-	courseDTO := dto.NewCourseDTO(course)
-	dto.PrintCourseDTO(courseDTO)
+	courseDTO := dto2.NewCourseDTO(course)
+	dto2.PrintCourseDTO(courseDTO)
 }
 
 func (h *Handler) FindLessonByID(c *Console) {
@@ -58,7 +58,7 @@ func (h *Handler) FindLessonByID(c *Console) {
 	}
 
 	var lessonID domain.ID
-	err = dto.InputID(&lessonID, "lesson")
+	err = dto2.InputID(&lessonID, "lesson")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -75,13 +75,13 @@ func (h *Handler) FindLessonByID(c *Console) {
 		return
 	}
 
-	lessonDTO := dto.NewLessonDTO(lesson)
-	dto.PrintLessonDTO(lessonDTO)
+	lessonDTO := dto2.NewLessonDTO(lesson)
+	dto2.PrintLessonDTO(lessonDTO)
 }
 
 func (h *Handler) FindCourseTeachers(c *Console) {
 	var courseID domain.ID
-	err := dto.InputID(&courseID, "course")
+	err := dto2.InputID(&courseID, "course")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -99,7 +99,7 @@ func (h *Handler) FindCourseTeachers(c *Console) {
 	}
 
 	for _, teacher := range teachers {
-		dto.PrintUserDTO(dto.NewUserDTO(teacher))
+		dto2.PrintUserDTO(dto2.NewUserDTO(teacher))
 		fmt.Println()
 	}
 }
@@ -112,7 +112,7 @@ func (h *Handler) AddCourseTeacher(c *Console) {
 	}
 
 	var courseID domain.ID
-	err = dto.InputID(&courseID, "course")
+	err = dto2.InputID(&courseID, "course")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -130,7 +130,7 @@ func (h *Handler) AddCourseTeacher(c *Console) {
 	}
 
 	var teacherID domain.ID
-	err = dto.InputID(&teacherID, "teacher")
+	err = dto2.InputID(&teacherID, "teacher")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -153,7 +153,7 @@ func (h *Handler) PublishCourse(c *Console) {
 	}
 
 	var courseID domain.ID
-	err = dto.InputID(&courseID, "course")
+	err = dto2.InputID(&courseID, "course")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -187,7 +187,7 @@ func (h *Handler) FindCourseLessons(c *Console) {
 	}
 
 	var courseID domain.ID
-	err = dto.InputID(&courseID, "course")
+	err = dto2.InputID(&courseID, "course")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -210,7 +210,7 @@ func (h *Handler) FindCourseLessons(c *Console) {
 	}
 
 	for _, lesson := range lessons {
-		dto.PrintLessonDTO(dto.NewLessonDTO(lesson))
+		dto2.PrintLessonDTO(dto2.NewLessonDTO(lesson))
 		fmt.Println()
 	}
 }
@@ -223,7 +223,7 @@ func (h *Handler) CreateCourseLesson(c *Console) {
 	}
 
 	var courseID domain.ID
-	err = dto.InputID(&courseID, "course")
+	err = dto2.InputID(&courseID, "course")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -234,8 +234,8 @@ func (h *Handler) CreateCourseLesson(c *Console) {
 		return
 	}
 
-	var createLessonDTO dto.CreateLessonDTO
-	err = dto.InputCreateLessonDTO(&createLessonDTO)
+	var createLessonDTO dto2.CreateLessonDTO
+	err = dto2.InputCreateLessonDTO(&createLessonDTO)
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -243,7 +243,7 @@ func (h *Handler) CreateCourseLesson(c *Console) {
 
 	var lesson domain.Lesson
 	switch createLessonDTO.Type {
-	case dto.LessonDTOTheory:
+	case dto2.LessonDTOTheory:
 		if !createLessonDTO.Theory.Valid {
 			ErrorResponse(BadRequestError)
 			return
@@ -254,7 +254,7 @@ func (h *Handler) CreateCourseLesson(c *Console) {
 				Score:  int(createLessonDTO.Score.Int64),
 				Theory: createLessonDTO.Theory.String,
 			})
-	case dto.LessonDTOVideo:
+	case dto2.LessonDTOVideo:
 		if !createLessonDTO.VideoUrl.Valid {
 			ErrorResponse(BadRequestError)
 			return
@@ -265,7 +265,7 @@ func (h *Handler) CreateCourseLesson(c *Console) {
 				Score:    int(createLessonDTO.Score.Int64),
 				VideoUrl: createLessonDTO.VideoUrl.String,
 			})
-	case dto.LessonDTOPractice:
+	case dto2.LessonDTOPractice:
 		if createLessonDTO.Tests == nil {
 			ErrorResponse(BadRequestError)
 			return
@@ -296,8 +296,8 @@ func (h *Handler) CreateCourseLesson(c *Console) {
 		return
 	}
 
-	lessonDTO := dto.NewLessonDTO(lesson)
-	dto.PrintLessonDTO(lessonDTO)
+	lessonDTO := dto2.NewLessonDTO(lesson)
+	dto2.PrintLessonDTO(lessonDTO)
 }
 
 func (h *Handler) AddCourseReview(c *Console) {
@@ -309,13 +309,13 @@ func (h *Handler) AddCourseReview(c *Console) {
 	userID := *c.UserID
 
 	var courseID domain.ID
-	err = dto.InputID(&courseID, "course")
+	err = dto2.InputID(&courseID, "course")
 	if err != nil {
 		ErrorResponse(err)
 		return
 	}
 
-	var createReviewDTO dto.CreateReviewDTO
+	var createReviewDTO dto2.CreateReviewDTO
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("Review text: ")
 	text, _ := reader.ReadString('\n')
@@ -325,13 +325,13 @@ func (h *Handler) AddCourseReview(c *Console) {
 	review, err := h.reviewService.CreateCourseReview(context.Background(), courseID, userID,
 		port.CreateReviewParam{Text: createReviewDTO.Text})
 
-	reviewDTO := dto.NewReviewDTO(review)
-	dto.PrintReviewDTO(reviewDTO)
+	reviewDTO := dto2.NewReviewDTO(review)
+	dto2.PrintReviewDTO(reviewDTO)
 }
 
 func (h *Handler) FindCourseReviews(c *Console) {
 	var courseID domain.ID
-	err := dto.InputID(&courseID, "course")
+	err := dto2.InputID(&courseID, "course")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -349,7 +349,7 @@ func (h *Handler) FindCourseReviews(c *Console) {
 	}
 
 	for _, review := range reviews {
-		dto.PrintReviewDTO(dto.NewReviewDTO(review))
+		dto2.PrintReviewDTO(dto2.NewReviewDTO(review))
 		fmt.Println()
 	}
 }
@@ -363,7 +363,7 @@ func (h *Handler) FindLessonStat(c *Console) {
 	userID := *c.UserID
 
 	var lessonID domain.ID
-	err = dto.InputID(&lessonID, "lesson")
+	err = dto2.InputID(&lessonID, "lesson")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -386,8 +386,8 @@ func (h *Handler) FindLessonStat(c *Console) {
 		return
 	}
 
-	statDTO := dto.NewLessonStatDTO(stat)
-	dto.PrintLessonStatDTO(statDTO)
+	statDTO := dto2.NewLessonStatDTO(stat)
+	dto2.PrintLessonStatDTO(statDTO)
 }
 
 func (h *Handler) PassCourseLesson(c *Console) {
@@ -399,7 +399,7 @@ func (h *Handler) PassCourseLesson(c *Console) {
 	userID := *c.UserID
 
 	var lessonID domain.ID
-	err = dto.InputID(&lessonID, "lesson")
+	err = dto2.InputID(&lessonID, "lesson")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -498,7 +498,7 @@ func (h *Handler) GetCourseCertificate(c *Console) {
 	userID := *c.UserID
 
 	var courseID domain.ID
-	err = dto.InputID(&courseID, "course")
+	err = dto2.InputID(&courseID, "course")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -511,8 +511,8 @@ func (h *Handler) GetCourseCertificate(c *Console) {
 		return
 	}
 
-	certificateDTO := dto.NewCertificateDTO(certificate)
-	dto.PrintCertificateDTO(certificateDTO)
+	certificateDTO := dto2.NewCertificateDTO(certificate)
+	dto2.PrintCertificateDTO(certificateDTO)
 }
 
 func (h *Handler) CreateCourseCertificate(c *Console) {
@@ -524,7 +524,7 @@ func (h *Handler) CreateCourseCertificate(c *Console) {
 	userID := *c.UserID
 
 	var courseID domain.ID
-	err = dto.InputID(&courseID, "course")
+	err = dto2.InputID(&courseID, "course")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -544,8 +544,8 @@ func (h *Handler) CreateCourseCertificate(c *Console) {
 		return
 	}
 
-	certificateDTO := dto.NewCertificateDTO(certificate)
-	dto.PrintCertificateDTO(certificateDTO)
+	certificateDTO := dto2.NewCertificateDTO(certificate)
+	dto2.PrintCertificateDTO(certificateDTO)
 }
 
 func (h *Handler) verifyCourseWriteAccess(c *Console, courseID domain.ID) bool {

@@ -1,11 +1,11 @@
-package eschool_console
+package console
 
 import (
 	"bufio"
 	"context"
 	"fmt"
 	"github.com/guregu/null"
-	"github.com/paw1a/eschool-console/dto"
+	dto2 "github.com/paw1a/eschool-console/console/dto"
 	"github.com/paw1a/eschool-core/domain"
 	"github.com/paw1a/eschool-core/port"
 	"os"
@@ -25,14 +25,14 @@ func (h *Handler) FindAllSchools(c *Console) {
 	}
 
 	for _, school := range schools {
-		dto.PrintSchoolDTO(dto.NewSchoolDTO(school))
+		dto2.PrintSchoolDTO(dto2.NewSchoolDTO(school))
 		fmt.Println()
 	}
 }
 
 func (h *Handler) FindSchoolByID(c *Console) {
 	var schoolID domain.ID
-	err := dto.InputID(&schoolID, "school")
+	err := dto2.InputID(&schoolID, "school")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -44,8 +44,8 @@ func (h *Handler) FindSchoolByID(c *Console) {
 		return
 	}
 
-	schoolDTO := dto.NewSchoolDTO(school)
-	dto.PrintSchoolDTO(schoolDTO)
+	schoolDTO := dto2.NewSchoolDTO(school)
+	dto2.PrintSchoolDTO(schoolDTO)
 }
 
 func (h *Handler) CreateSchool(c *Console) {
@@ -56,8 +56,8 @@ func (h *Handler) CreateSchool(c *Console) {
 	}
 	userID := *c.UserID
 
-	var createSchoolDTO dto.CreateSchoolDTO
-	err = dto.InputCreateSchoolDTO(&createSchoolDTO)
+	var createSchoolDTO dto2.CreateSchoolDTO
+	err = dto2.InputCreateSchoolDTO(&createSchoolDTO)
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -79,8 +79,8 @@ func (h *Handler) CreateSchool(c *Console) {
 		return
 	}
 
-	schoolDTO := dto.NewSchoolDTO(school)
-	dto.PrintSchoolDTO(schoolDTO)
+	schoolDTO := dto2.NewSchoolDTO(school)
+	dto2.PrintSchoolDTO(schoolDTO)
 }
 
 func (h *Handler) UpdateSchool(c *Console) {
@@ -91,13 +91,13 @@ func (h *Handler) UpdateSchool(c *Console) {
 	}
 
 	var schoolID domain.ID
-	err = dto.InputID(&schoolID, "school")
+	err = dto2.InputID(&schoolID, "school")
 	if err != nil {
 		ErrorResponse(err)
 		return
 	}
 
-	var updateSchoolDTO dto.UpdateSchoolDTO
+	var updateSchoolDTO dto2.UpdateSchoolDTO
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("School description: ")
 	description, _ := reader.ReadString('\n')
@@ -115,13 +115,13 @@ func (h *Handler) UpdateSchool(c *Console) {
 		return
 	}
 
-	schoolDTO := dto.NewSchoolDTO(school)
-	dto.PrintSchoolDTO(schoolDTO)
+	schoolDTO := dto2.NewSchoolDTO(school)
+	dto2.PrintSchoolDTO(schoolDTO)
 }
 
 func (h *Handler) FindSchoolCourses(c *Console) {
 	var schoolID domain.ID
-	err := dto.InputID(&schoolID, "school")
+	err := dto2.InputID(&schoolID, "school")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -139,7 +139,7 @@ func (h *Handler) FindSchoolCourses(c *Console) {
 	}
 
 	for _, course := range courses {
-		dto.PrintCourseDTO(dto.NewCourseDTO(course))
+		dto2.PrintCourseDTO(dto2.NewCourseDTO(course))
 		fmt.Println()
 	}
 }
@@ -153,7 +153,7 @@ func (h *Handler) CreateSchoolCourse(c *Console) {
 	userID := *c.UserID
 
 	var schoolID domain.ID
-	err = dto.InputID(&schoolID, "school")
+	err = dto2.InputID(&schoolID, "school")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -164,8 +164,8 @@ func (h *Handler) CreateSchoolCourse(c *Console) {
 		return
 	}
 
-	var createCourseDTO dto.CreateCourseDTO
-	err = dto.InputCreateCourseDTO(&createCourseDTO)
+	var createCourseDTO dto2.CreateCourseDTO
+	err = dto2.InputCreateCourseDTO(&createCourseDTO)
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -189,8 +189,8 @@ func (h *Handler) CreateSchoolCourse(c *Console) {
 		return
 	}
 
-	courseDTO := dto.NewCourseDTO(course)
-	dto.PrintCourseDTO(courseDTO)
+	courseDTO := dto2.NewCourseDTO(course)
+	dto2.PrintCourseDTO(courseDTO)
 }
 
 func (h *Handler) UpdateSchoolCourse(c *Console) {
@@ -201,7 +201,7 @@ func (h *Handler) UpdateSchoolCourse(c *Console) {
 	}
 
 	var courseID domain.ID
-	err = dto.InputID(&courseID, "course")
+	err = dto2.InputID(&courseID, "course")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -218,8 +218,8 @@ func (h *Handler) UpdateSchoolCourse(c *Console) {
 		return
 	}
 
-	var updateCourseDTO dto.UpdateCourseDTO
-	err = dto.InputUpdateCourseDTO(&updateCourseDTO)
+	var updateCourseDTO dto2.UpdateCourseDTO
+	err = dto2.InputUpdateCourseDTO(&updateCourseDTO)
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -237,8 +237,8 @@ func (h *Handler) UpdateSchoolCourse(c *Console) {
 		return
 	}
 
-	courseDTO := dto.NewCourseDTO(updatedCourse)
-	dto.PrintCourseDTO(courseDTO)
+	courseDTO := dto2.NewCourseDTO(updatedCourse)
+	dto2.PrintCourseDTO(courseDTO)
 }
 
 func (h *Handler) DeleteSchoolCourse(c *Console) {
@@ -249,7 +249,7 @@ func (h *Handler) DeleteSchoolCourse(c *Console) {
 	}
 
 	var courseID domain.ID
-	err = dto.InputID(&courseID, "course")
+	err = dto2.InputID(&courseID, "course")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -276,7 +276,7 @@ func (h *Handler) DeleteSchoolCourse(c *Console) {
 
 func (h *Handler) FindSchoolTeachers(c *Console) {
 	var schoolID domain.ID
-	err := dto.InputID(&schoolID, "school")
+	err := dto2.InputID(&schoolID, "school")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -294,7 +294,7 @@ func (h *Handler) FindSchoolTeachers(c *Console) {
 	}
 
 	for _, teacher := range teachers {
-		dto.PrintUserDTO(dto.NewUserDTO(teacher))
+		dto2.PrintUserDTO(dto2.NewUserDTO(teacher))
 		fmt.Println()
 	}
 }
@@ -307,7 +307,7 @@ func (h *Handler) AddSchoolTeacher(c *Console) {
 	}
 
 	var schoolID domain.ID
-	err = dto.InputID(&schoolID, "school")
+	err = dto2.InputID(&schoolID, "school")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -319,7 +319,7 @@ func (h *Handler) AddSchoolTeacher(c *Console) {
 	}
 
 	var teacherID domain.ID
-	err = dto.InputID(&teacherID, "teacher")
+	err = dto2.InputID(&teacherID, "teacher")
 	if err != nil {
 		ErrorResponse(err)
 		return

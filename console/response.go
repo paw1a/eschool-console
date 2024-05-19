@@ -1,4 +1,4 @@
-package eschool_console
+package console
 
 import (
 	"fmt"

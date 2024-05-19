@@ -1,9 +1,9 @@
-package eschool_console
+package console
 
 import (
 	"context"
 	"fmt"
-	"github.com/paw1a/eschool-console/dto"
+	dto2 "github.com/paw1a/eschool-console/console/dto"
 	"github.com/paw1a/eschool-core/domain"
 	"github.com/paw1a/eschool-core/port"
 )
@@ -21,7 +21,7 @@ func (h *Handler) GetAllUsers(c *Console) {
 	}
 
 	for _, user := range users {
-		dto.PrintUserDTO(dto.NewUserDTO(user))
+		dto2.PrintUserDTO(dto2.NewUserDTO(user))
 		fmt.Println()
 	}
 }
@@ -53,8 +53,8 @@ func (h *Handler) UpdateUser(c *Console) {
 	}
 	userID := *c.UserID
 
-	var updateUserDTO dto.UpdateUserDTO
-	err = dto.InputUpdateUserDTO(&updateUserDTO)
+	var updateUserDTO dto2.UpdateUserDTO
+	err = dto2.InputUpdateUserDTO(&updateUserDTO)
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -68,8 +68,8 @@ func (h *Handler) UpdateUser(c *Console) {
 		AvatarUrl: updateUserDTO.AvatarUrl,
 	})
 
-	userDTO := dto.NewUserDTO(user)
-	dto.PrintUserDTO(userDTO)
+	userDTO := dto2.NewUserDTO(user)
+	dto2.PrintUserDTO(userDTO)
 }
 
 func (h *Handler) AddUserFreeCourse(c *Console) {
@@ -81,7 +81,7 @@ func (h *Handler) AddUserFreeCourse(c *Console) {
 	userID := *c.UserID
 
 	var courseID domain.ID
-	err = dto.InputID(&courseID, "course")
+	err = dto2.InputID(&courseID, "course")
 	if err != nil {
 		ErrorResponse(err)
 		return
@@ -127,7 +127,7 @@ func (h *Handler) FindUserCourses(c *Console) {
 	}
 
 	for _, course := range courses {
-		dto.PrintCourseDTO(dto.NewCourseDTO(course))
+		dto2.PrintCourseDTO(dto2.NewCourseDTO(course))
 		fmt.Println()
 	}
 }

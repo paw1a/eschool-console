@@ -1,9 +1,9 @@
-package eschool_console
+package console
 
 import (
 	"context"
 	"fmt"
-	"github.com/paw1a/eschool-console/dto"
+	"github.com/paw1a/eschool-console/console/dto"
 	"github.com/paw1a/eschool-core/port"
 )
 
