@@ -4,8 +4,9 @@ import (
 	"context"
 	"fmt"
 	"github.com/paw1a/eschool-core/domain"
-	log "github.com/sirupsen/logrus"
 	"go.uber.org/fx"
+	"go.uber.org/zap"
+	"log"
 	"os"
 	"time"
 )
@@ -14,6 +15,7 @@ type Console struct {
 	Handler *Handler
 	Routes  map[Option]func(*Console)
 	UserID  *domain.ID
+	Logger  *zap.Logger
 }
 
 type Option int
@@ -58,15 +60,16 @@ const (
 	createCourseCertificate
 )
 
-func NewConsole(lc fx.Lifecycle, handler *Handler) *Console {
+func NewConsole(lc fx.Lifecycle, handler *Handler, logger *zap.Logger) *Console {
 	c := &Console{
 		Handler: handler,
+		Logger:  logger,
 	}
 	c.InitRoutes()
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
 			go func() {
-				log.Infof("Console interface started")
+				logger.Info("console interface started")
 				log.Fatal(c.Start())
 			}()
 			return nil
